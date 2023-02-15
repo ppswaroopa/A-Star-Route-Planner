@@ -10,6 +10,8 @@ RoutePlanner::RoutePlanner(RouteModel &model, float start_x, float start_y, floa
 
     // TODO 2: Use the m_Model.FindClosestNode method to find the closest nodes to the starting and ending coordinates.
     // Store the nodes you find in the RoutePlanner's start_node and end_node attributes.
+    RoutePlanner::start_node = &model.FindClosestNode(start_x,start_y);
+    RoutePlanner::end_node = &model.FindClosestNode(end_x,end_y);
 
 }
 
@@ -20,7 +22,8 @@ RoutePlanner::RoutePlanner(RouteModel &model, float start_x, float start_y, floa
 // - Node objects have a distance method to determine the distance to another node.
 
 float RoutePlanner::CalculateHValue(RouteModel::Node const *node) {
-
+    RouteModel::Node nod_ref = *node;  // I'd think there must be an alternative way to complete this call
+    return nod_ref.distance(nod_ref);
 }
 
 
@@ -32,7 +35,12 @@ float RoutePlanner::CalculateHValue(RouteModel::Node const *node) {
 // - For each node in current_node.neighbors, add the neighbor to open_list and set the node's visited attribute to true.
 
 void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
-
+    current_node->FindNeighbors();
+    for (auto node: current_node->neighbors)
+    {
+        // node->parent
+    }
+    
 }
 
 
