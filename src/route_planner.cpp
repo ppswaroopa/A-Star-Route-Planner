@@ -46,7 +46,6 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
         open_list.push_back(neighbor);
         neighbor->visited = true;
     }
-    
 }
 
 
@@ -56,9 +55,19 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
 // - Create a pointer to the node in the list with the lowest sum.
 // - Remove that node from the open_list.
 // - Return the pointer.
+bool compare_Sum(const RouteModel::Node* a, const RouteModel::Node* b){
+    float sum1 = a->h_value + a->g_value;
+    float sum2 = b->h_value + b->g_value;
+    return sum1 > sum2;
+}
 
 RouteModel::Node *RoutePlanner::NextNode() {
+    std::sort(open_list.begin(), open_list.end(), compare_Sum);
 
+    RouteModel::Node *low_sum = open_list.back();
+    open_list.pop_back();
+
+    return low_sum;
 }
 
 
@@ -76,6 +85,26 @@ std::vector<RouteModel::Node> RoutePlanner::ConstructFinalPath(RouteModel::Node 
     std::vector<RouteModel::Node> path_found;
 
     // TODO: Implement your solution here.
+    RouteModel::Node parent_node;
+    path_found.push_back(*current_node);
+
+    parent_node = *current_node->parent;
+    path_found.push_back(parent_node);
+    distance += current_node->distance(parent_node);
+    // std::cout<<distance<<"\n";
+    *current_node = parent_node;
+
+    while (true){
+        if (current_node->parent == start_node){
+            break;
+        }
+        parent_node = *current_node->parent;
+        path_found.push_back(parent_node);
+        distance += current_node->distance(parent_node);
+        *current_node = parent_node;
+    }
+    parent_node = *current_node->parent;
+    path_found.push_back(parent_node);
 
     distance *= m_Model.MetricScale(); // Multiply the distance by the scale of the map to get meters.
     return path_found;
@@ -94,5 +123,12 @@ void RoutePlanner::AStarSearch() {
     RouteModel::Node *current_node = nullptr;
 
     // TODO: Implement your solution here.
-
+    while (open_list.size() > 0){
+        AddNeighbors(current_node);
+        current_node = NextNode();
+        if (current_node == end_node){
+            m_Model.path = ConstructFinalPath(current_node);
+        }
+    }
+    
 }

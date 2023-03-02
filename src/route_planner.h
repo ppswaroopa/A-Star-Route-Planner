@@ -30,4 +30,6 @@ class RoutePlanner {
     RouteModel &m_Model;
 };
 
+bool compare_Sum(const RouteModel::Node* a, const RouteModel::Node* b);
+
 #endif
