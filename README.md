@@ -10,11 +10,11 @@ My build environment is Ubuntu 20.04.
 
 When cloning this project, be sure to use the `--recurse-submodules` flag. Using HTTPS:
 ```
-git clone https://github.com/udacity/CppND-Route-Planning-Project.git --recurse-submodules
+git clone https://github.com/ppswaroopa/route_planner_ND.git --recurse-submodules
 ```
 or with SSH:
 ```
-git clone git@github.com:udacity/CppND-Route-Planning-Project.git --recurse-submodules
+git clone git@github.com/ppswaroopa/route_planner_ND.git --recurse-submodules
 ```
 
 ## Dependencies for Running Locally
